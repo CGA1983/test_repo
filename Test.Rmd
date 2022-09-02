@@ -6,11 +6,21 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-a <- 1
-a <- a + 1
-print(a)
+library(tidyverse)
+library(tidymodels)
 
-b <- 2
+mtcars
+
+model_cars <- mtcars %>% 
+  group_by(cyl) %>% 
+  nest() %>% 
+  mutate(models = map(data, ~lm(hp ~ disp, data = .)),
+         tidied = map(models,tidy),
+         augment = map(models,augment))
+
+model_cars %>% 
+  pull(augment)
+
 ```
 
 ## R Markdown

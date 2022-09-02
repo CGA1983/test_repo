@@ -67,7 +67,10 @@ plsFitIris <- train(hp ~ .,
 
 testing_new <- testing %>% 
   mutate(fitted_hp = predict(plsFitIris, newdata = testing))
-testing_new
+
+testing_new %>% 
+  ggplot() +
+  geom_point(aes(x = hp, y = fitted_hp))
 
 ```
 

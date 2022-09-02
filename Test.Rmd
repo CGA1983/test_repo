@@ -16,10 +16,18 @@ model_cars <- mtcars %>%
   nest() %>% 
   mutate(models = map(data, ~lm(hp ~ disp, data = .)),
          tidied = map(models,tidy),
-         augment = map(models,augment))
+         augment = map(models,augment)) %>% 
+  unnest(augment)
+
+model_cars
 
 model_cars %>% 
-  pull(augment)
+  ggplot() +
+  geom_point(mapping = aes(x = disp, y = hp)) + 
+  facet_wrap(~cyl, scales = "free") + 
+  geom_line(mapping = aes(x = disp, y = .fitted))
+
+model_cars
 
 ```
 
